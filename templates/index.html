@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ham vs Spam Detector</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #0d0d0d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #1a1a1a;
+            padding: 40px;
+            border-radius: 14px;
+            box-shadow: 0 0 25px rgba(0, 255, 150, 0.08);
+            width: 500px;
+            border: 1px solid #2a2a2a;
+            animation: fadeSlideIn 0.6s ease-out;
+        }
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        h1 {
+            text-align: center;
+            color: #f5f5f5;
+            margin-bottom: 25px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 12px;
+            font-size: 15px;
+            background-color: #111;
+            color: #e0e0e0;
+            border: 1px solid #333;
+            border-radius: 8px;
+            resize: vertical;
+            font-family: inherit;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        textarea::placeholder {
+            color: #777;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #00cc88;
+            box-shadow: 0 0 12px rgba(0, 204, 136, 0.35);
+        }
+        button {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background-color: #00cc88;
+            color: #0d0d0d;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+        }
+        button:hover {
+            background-color: #00b377;
+            transform: scale(1.02);
+            box-shadow: 0 4px 18px rgba(0, 204, 136, 0.3);
+        }
+        button:active {
+            transform: scale(0.97);
+        }
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(13, 13, 13, 0.35);
+            transform: scale(0);
+            animation: rippleEffect 0.6s linear;
+            pointer-events: none;
+        }
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        .result {
+            margin-top: 22px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid;
+            animation: popIn 0.45s ease-out;
+        }
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.85);
+            }
+            70% {
+                opacity: 1;
+                transform: scale(1.03);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        .spam {
+            background-color: #2a0d0d;
+            color: #ff5c5c;
+            border-color: #5c1a1a;
+        }
+        .ham {
+            background-color: #0d2a17;
+            color: #4dff9f;
+            border-color: #1a5c3a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📧 Ham vs Spam Detector</h1>
+        <form method="post" action="/">
+            <textarea name="email_text" placeholder="Paste the email or message text here...">{{ email_text or "" }}</textarea>
+            <button type="submit" id="checkBtn">Check Now</button>
+        </form>
+
+        {% if result %}
+            <div class="result {% if 'SPAM' in result %}spam{% else %}ham{% endif %}">
+                {{ result }}
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        const btn = document.getElementById("checkBtn");
+        btn.addEventListener("click", function (e) {
+            const circle = document.createElement("span");
+            circle.classList.add("ripple");
+            const rect = btn.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            circle.style.width = circle.style.height = size + "px";
+            circle.style.left = (e.clientX - rect.left - size / 2) + "px";
+            circle.style.top = (e.clientY - rect.top - size / 2) + "px";
+            btn.appendChild(circle);
+            setTimeout(() => circle.remove(), 600);
+        });
+    </script>
+</body>
+</html>
