@@ -9,7 +9,6 @@ app = FastAPI()
 model = joblib.load("model.joblib")
 vectorizer = joblib.load("vectorizer.joblib")
 
-# HTML templates এর folder বলে দিচ্ছি
 templates = Jinja2Templates(directory="templates")
 
 
